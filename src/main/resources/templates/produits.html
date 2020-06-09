@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout">
+<head>
+<meta charset="UTF-8" />
+<title>Produits</title>
+</head>
+<body>
+	`
+	<div layout:fragment="content1">
+
+		<div class="container">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Liste des produits</div>
+				<div class="panel-body">
+				<div th:if="${message != null}">
+				<p th:text="${message}" class="alert alert-success" role="alert"></p>
+				</div>
+					<form th:action="@{/user/index}" method="get">
+						<label>Recherche</label> <input type="text" name="motCle"
+							placeholder="Saisissez un mot clé" th:value=${motCle}>
+						<button type="submit" class="btn btn-primary">Chercher</button>
+					</form>
+				</div>
+				<div class="panel-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Designation</th>
+								<th>Prix</th>
+								<th>Quantite</th>
+							</tr>
+						<thead />
+						<tbody>
+							<tr th:each=p:${listProduits}>
+								<td th:text="${p.id}"></td>
+								<td th:text="${p.designation}"></td>
+								<td th:text="${p.prix}"></td>
+								<td th:text="${p.Quantite}"></td>
+								<td>
+									<!-- Button trigger modal -->
+									<button class="btn btn-danger" data-toggle="modal"
+										data-target="#confirmModal">Delete</button>
+								</td>
+								<td><a class="btn btn-info"
+									th:href="@{/admin/edit(id=${p.id})}">Edit</a></td>
+
+								<!-- Modal -->
+								<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title alert alert-danger" role="alert">Confirmation suppression<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">&times;</button></h4>
+												
+											</div>
+											<div class="modal-body">
+												<span class="alert alert-light" role="alert">Etes-vous sûr de vouloir supprimer?</span>
+											</div>
+											<div class="modal-footer">
+												<a class="btn btn-danger"
+													th:href="@{/admin/delete(id=${p.id}, page=${currentPage}, motCle=${motCle})}">Supprimer</a>
+												<button type="button" class="btn btn-primary"
+													data-dismiss="modal">Annuler</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+		<div class="container">
+			<ul class="nav nav-pills">
+				<li th:class="${currentPage == status.index}?'active':''"
+					th:each="pa,status:${pages}"><a
+					th:href="@{/user/index(page=${status.index}, motCle=${motCle})}"
+					th:text=${status.index}></a></li>
+			</ul>
+		</div>
+
+
+	</div>
+
+
+</body>
+</html>
